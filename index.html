@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Album_Filip</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:white;
+font-family:Arial;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+}
+
+.album{
+text-align:center;
+}
+
+.cover{
+width:300px;
+height:300px;
+object-fit:cover;
+border-radius:10px;
+box-shadow:0 0 30px rgba(255,255,255,0.3);
+cursor:pointer;
+}
+
+.title{
+margin-top:15px;
+font-size:28px;
+letter-spacing:2px;
+}
+
+.tracklist{
+margin-top:40px;
+width:90%;
+max-width:400px;
+}
+
+.track{
+padding:12px;
+border-bottom:1px solid #333;
+cursor:pointer;
+transition:0.3s;
+}
+
+.track:hover{
+background:#111;
+}
+
+audio{
+margin-top:25px;
+width:300px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="album">
+
+<!-- ================= OKŁADKA ================= -->
+<!-- PODMIEŃ NA SWOJE ZDJĘCIE -->
+<img src="okladka.jpg" class="cover">
+
+<div class="title">Album_Filip</div>
+
+<audio id="audio" controls></audio>
+
+</div>
+
+<div class="tracklist">
+
+<!-- ================= UTWORY ================= -->
+<!-- TU NIC NIE ZMIENIAJ OPRÓCZ NAZW PLIKÓW MP3 -->
+
+<div class="track" onclick="play('utwory/1.mp3')">1</div>
+<div class="track" onclick="play('utwory/2.mp3')">2</div>
+<div class="track" onclick="play('utwory/3.mp3')">3</div>
+<div class="track" onclick="play('utwory/4.mp3')">4</div>
+<div class="track" onclick="play('utwory/5.mp3')">5</div>
+<div class="track" onclick="play('utwory/6.mp3')">6</div>
+<div class="track" onclick="play('utwory/7.mp3')">7</div>
+<div class="track" onclick="play('utwory/8.mp3')">8</div>
+
+</div>
+
+<script>
+
+const audio = document.getElementById("audio")
+
+function play(src){
+audio.src = src
+audio.play()
+}
+
+</script>
+
+</body>
+</html>
