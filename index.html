@@ -2,63 +2,71 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Album_Filip</title>
+<title>Kosmiczny Album</title>
 
 <style>
 
 body{
-margin:0;
-background:black;
-color:white;
+background:radial-gradient(circle,#032003,#000);
 font-family:Arial;
+color:white;
 display:flex;
-flex-direction:column;
-align-items:center;
 justify-content:center;
-min-height:100vh;
+align-items:center;
+height:100vh;
+margin:0;
 }
 
-.album{
+.player{
+background:#071707;
+padding:25px;
+border-radius:15px;
+box-shadow:0 0 40px #00ff66;
+width:420px;
 text-align:center;
 }
 
 .cover{
-width:300px;
-height:300px;
-object-fit:cover;
-border-radius:10px;
-box-shadow:0 0 30px rgba(255,255,255,0.3);
+width:100%;
+border-radius:12px;
+box-shadow:0 0 20px #00ff88;
+margin-bottom:15px;
+}
+
+ul{
+list-style:none;
+padding:0;
+max-height:240px;
+overflow-y:auto;
+}
+
+li{
+padding:8px;
+cursor:pointer;
+border-bottom:1px solid #00ff44;
+}
+
+li:hover{
+background:#00ff2230;
+}
+
+button{
+background:#00aa44;
+border:none;
+padding:10px;
+margin:5px;
+font-size:18px;
+color:white;
+border-radius:8px;
 cursor:pointer;
 }
 
-.title{
-margin-top:15px;
-font-size:28px;
-letter-spacing:2px;
+button:hover{
+background:#00ff66;
 }
 
-.tracklist{
-margin-top:40px;
-width:90%;
-max-width:400px;
-}
-
-.track{
-padding:12px;
-border-bottom:1px solid #333;
-cursor:pointer;
-transition:0.3s;
-}
-
-.track:hover{
-background:#111;
-}
-
-audio{
-margin-top:25px;
-width:300px;
+.options{
+margin-top:10px;
 }
 
 </style>
@@ -66,42 +74,95 @@ width:300px;
 
 <body>
 
-<div class="album">
+<div class="player">
 
-<!-- ================= OKŁADKA ================= -->
-<!-- PODMIEŃ NA SWOJE ZDJĘCIE -->
-<img src="okladka.jpg" class="cover">
+<img src="cover.jpg" class="cover">
 
-<div class="title">Album_Filip</div>
+<h2>ALIEN BOY</h2>
 
-<audio id="audio" controls></audio>
+<ul id="playlist"></ul>
 
+<div>
+<button onclick="prevTrack()">⏮</button>
+<button onclick="togglePlay()">▶ / ⏸</button>
+<button onclick="nextTrack()">⏭</button>
 </div>
 
-<div class="tracklist">
+<div class="options">
+<label><input type="checkbox" id="autoplay" checked> Autoplay</label>
+<label><input type="checkbox" id="loop"> Loop</label>
+<label><input type="checkbox" id="shuffle"> Shuffle</label>
+</div>
 
-<!-- ================= UTWORY ================= -->
-<!-- TU NIC NIE ZMIENIAJ OPRÓCZ NAZW PLIKÓW MP3 -->
-
-<div class="track" onclick="play('utwory/1.mp3')">1</div>
-<div class="track" onclick="play('utwory/2.mp3')">2</div>
-<div class="track" onclick="play('utwory/3.mp3')">3</div>
-<div class="track" onclick="play('utwory/4.mp3')">4</div>
-<div class="track" onclick="play('utwory/5.mp3')">5</div>
-<div class="track" onclick="play('utwory/6.mp3')">6</div>
-<div class="track" onclick="play('utwory/7.mp3')">7</div>
-<div class="track" onclick="play('utwory/8.mp3')">8</div>
+<audio id="audio"></audio>
 
 </div>
 
 <script>
 
-const audio = document.getElementById("audio")
+const songs=[
+"AMAZOŃSKA JUNGLA",
+"OKULARY",
+"KOSMITA",
+"GRILL U GAWRONA",
+"GA-GA-GAWRON",
+"SEX TAPE",
+"KICI KICI",
+"GEJOWSKI RAJDOWIEC",
+"CHAŁUPY WELCOME TO",
+"ŁAŁ"
+];
 
-function play(src){
-audio.src = src
-audio.play()
+const audio=document.getElementById("audio");
+const playlist=document.getElementById("playlist");
+
+let current=0;
+
+songs.forEach((song,i)=>{
+let li=document.createElement("li");
+li.textContent=(i+1)+". "+song;
+li.onclick=()=>playTrack(i);
+playlist.appendChild(li);
+});
+
+function playTrack(i){
+current=i;
+audio.src="music/"+String(i+1).padStart(2,'0')+".mp3";
+audio.play();
 }
+
+function togglePlay(){
+audio.paused?audio.play():audio.pause();
+}
+
+function nextTrack(){
+if(document.getElementById("shuffle").checked){
+current=Math.floor(Math.random()*songs.length);
+}else{
+current=(current+1)%songs.length;
+}
+playTrack(current);
+}
+
+function prevTrack(){
+current=(current-1+songs.length)%songs.length;
+playTrack(current);
+}
+
+audio.addEventListener("ended",()=>{
+
+if(document.getElementById("loop").checked){
+playTrack(current);
+return;
+}
+
+if(document.getElementById("autoplay").checked){
+nextTrack();
+}
+
+});
+
+playTrack(0);
 
 </script>
 
